@@ -1,6 +1,7 @@
 import pygame, sys
 from Settings import *
 from Player import *
+from Map import *
 
 class Game:
     def __init__(self):
@@ -9,8 +10,8 @@ class Game:
         self.player = pygame.sprite.GroupSingle(player_sprite)
         #Health/Score
 
-        #Obstacle
-
+        #Map
+        self.game_map = Map()
         #Ennemies
 
         #Extra
@@ -18,7 +19,9 @@ class Game:
 
     def run(self):
         self.player.update()
-
+        self.game_map.update(self.player.sprite)
+        screen.fill(SCREEN_COLOR)
+        self.game_map.draw(screen)
         self.player.draw(screen)
 
 
@@ -36,7 +39,6 @@ if __name__ == "__main__":
                 pygame.quit()
                 sys.exit()
 
-        screen.fill(SCREEN_COLOR)
         game.run()
 
         pygame.display.flip()
