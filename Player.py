@@ -2,12 +2,12 @@ import pygame
 from Settings import *
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, speed):
+    def __init__(self, pos):
         super().__init__()
         self.image = pygame.image.load(r"Sprites\mario.png").convert_alpha()
         self.rect = self.image.get_rect(midbottom = pos)
-        self.speed = speed
-        self.jump_power = -20
+        self.speed = SPEED
+        self.jump_power = JUMP_POWER
         self.vy = 0
         self.on_ground = False
 

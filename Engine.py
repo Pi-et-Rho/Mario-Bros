@@ -5,7 +5,7 @@ from Player import *
 class Game:
     def __init__(self):
         #Player
-        player_sprite = Player((SCREEN_WIDTH / 2, SCREEN_HEIGHT), 5)
+        player_sprite = Player((SCREEN_WIDTH / 2, SCREEN_HEIGHT))
         self.player = pygame.sprite.GroupSingle(player_sprite)
         #Health/Score
 
