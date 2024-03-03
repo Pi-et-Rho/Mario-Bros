@@ -7,9 +7,9 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.image.load(r"Sprites\mario.png").convert_alpha()
         self.rect = self.image.get_rect(midbottom = pos)
         self.speed = speed
-        self.jump_speed = 10
-        self.gravity = 0.5
-        self.is_jumping = False
+        self.jump_power = -20
+        self.vy = 0
+        self.on_ground = False
 
     def get_input(self):
         keys = pygame.key.get_pressed()
@@ -19,24 +19,19 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_LEFT]:
             self.rect.x -= self.speed
 
-        if keys[pygame.K_SPACE] and not self.is_jumping:
-            self.is_jumping = True
-            self.jump_speed = 10  # Réinitialiser la vitesse de saut au début du saut
-
-        if self.is_jumping:
-            self.rect.y -= self.jump_speed
-            self.jump_speed -= self.gravity
-            if self.jump_speed < 0:  # Si le personnage atteint le sommet du saut
-                self.is_jumping = False  # Arrêter le saut et commencer la chute
-                self.gravity = -0.5  # Inverser la gravité pour la phase de chute
-
-        else:  # Si le personnage est en train de tomber
-            self.rect.y -= self.jump_speed
-            self.jump_speed -= self.gravity
-            if self.rect.y >= SCREEN_HEIGHT * 2 / 3:
-                self.rect.y = SCREEN_HEIGHT * 2 / 3
-                self.jump_speed = 0
-                self.gravity = 0.5 
+        if keys[pygame.K_SPACE] and self.on_ground:
+            self.vy = self.jump_power
+            self.on_ground = False
 
     def update(self):
         self.get_input()
+
+        if not self.on_ground:
+            self.vy += GRAVITY
+            self.rect.y += self.vy
+
+            if self.rect.bottom >= SCREEN_HEIGHT:
+                self.rect.bottom = SCREEN_HEIGHT
+                self.on_ground = True
+                self.vy = 0
+        self.rect.x = (max(0, min(self.rect.x, SCREEN_WIDTH - self.rect.width)))
